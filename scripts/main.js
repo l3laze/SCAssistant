@@ -14,7 +14,7 @@ document.getElementById('overlay_container').addEventListener('click', function 
 document.getElementById('modal_container').addEventListener('click', function (event) {
   event.preventDefault()
   event.stopPropagation()
-  return false;
+  return false
 })
 
 document.getElementById('closeModal').addEventListener('click', function () {

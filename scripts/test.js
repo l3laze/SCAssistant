@@ -56,7 +56,7 @@ async function selfTest () {
   }
 
   document.getElementById('hamburger').classList.remove('active')
-  document.getElementById('menu').classList.remove('responsive')
+  document.getElementById('controls').classList.remove('responsive')
 
   test('User Interface')
 
@@ -182,6 +182,7 @@ async function selfTest () {
 
   
   document.getElementById('modeBtn').dispatchEvent(clickEvent)
+  document.getElementById('hamburger').dispatchEvent(clickEvent)
   document.getElementById('settingsBtn').dispatchEvent(clickEvent)
 
   res.scrollTop = res.scrollHeight
