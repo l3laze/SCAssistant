@@ -51,6 +51,13 @@ async function selfTest () {
   const clickEvent = new MouseEvent('click')
   const rightClickEvent = new MouseEvent('contextmenu')
 
+  if (document.getElementById('cb_container').style.display === 'none') {
+    document.getElementById('modeBtn').dispatchEvent(clickEvent)
+  }
+
+  document.getElementById('hamburger').classList.remove('active')
+  document.getElementById('menu').classList.remove('responsive')
+
   test('User Interface')
 
   const settings = document.getElementById('settings')
@@ -173,7 +180,8 @@ async function selfTest () {
 
   res.innerText = `${tests.message}\n  ${((tests.passed / tests.total * 100) + '').substring(0, 5)}% of tests passed (${tests.passed}/${tests.total}).`
 
-  // Has to be actively displayed to be scrolled.
+  
+  document.getElementById('modeBtn').dispatchEvent(clickEvent)
   document.getElementById('settingsBtn').dispatchEvent(clickEvent)
 
   res.scrollTop = res.scrollHeight
