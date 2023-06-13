@@ -50,17 +50,31 @@ a {
   content: '\2630';
 }
 
-#controls.menu a:nth-child(n+2):nth-child(-n+4) {
+#controls.menu a:nth-child(n+2):nth-child(-n+5) {
   display: block;
-  width: 33.3vw;
+  width: 25vw;
   margin: 0;
 }
 
-#controls.menu a:nth-child(n+5):nth-child(-n+6) {
+#controls.menu a:nth-child(n+6):nth-child(-n+7) {
   display: block;
   width: 50vw;
   margin: 0;
   border-top: 1px solid gray;
+}
+
+#controls a#reset {
+  display: none;
+  border-top: 1px solid gray;
+  width: 100vw;
+}
+
+#controls.menu.responsive a#reset {
+  display: none;
+}
+
+#coc_container {
+  display: none;
 }
 
 @media screen and (max-width: 600px) {
@@ -70,7 +84,7 @@ a {
     font-size: 18px;
   }
 
-  #controls a:nth-child(n+2):nth-child(-n+4) {
+  #controls a:nth-child(n+2):nth-child(-n+5) {
     display: none;
     width: 45vw;
   }
@@ -98,27 +112,35 @@ a {
     width: 100vw;
   }
 
-  #controls.menu.responsive a:nth-child(n+2), #controls.menu.responsive a:nth-child(-n+4) {
+  #controls.menu.responsive a:nth-child(n+2), #controls.menu.responsive a:nth-child(-n+5) {
     padding: 0 0 2px 0;
   }
 
-  #controls.menu.responsive a:nth-child(n+1):nth-child(-n+4) {
+  #controls.menu.responsive a:nth-child(n+2):nth-child(-n+5) {
     display: block;
     width: 100vw;
     margin: 0;
   }
 
-  #controls.menu a:nth-child(n+2):nth-child(-n+4) {
+  #controls.menu a:nth-child(n+2):nth-child(-n+5) {
     display: none;
   }
 
-
-  #controls.menu a:nth-child(n+5):nth-child(-n+6) {
+  #controls.menu a:nth-child(n+6):nth-child(-n+8) {
     border: none;
     width: calc((100vw - 48px) / 2);
   }
 
-  #controls.menu.responsive a:nth-child(n+5):nth-child(-n+6) {
+  #controls.menu.responsive a:nth-child(n+6):nth-child(-n+7) {
     display: none;
+  }
+
+  #controls.menu a#reset {
+    border: none;
+    width: calc(100vw - 48px);
+  }
+
+  #controls.responsive #hamburger.active ~ a#reset {
+    visibility: hidden;
   }
 }

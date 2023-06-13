@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="style/main.css">
 <link rel="stylesheet" href="style/dialog.css">
 <link rel="stylesheet" href="style/cb.css">
+<link rel="stylesheet" href="style/coc.css">
 </head>
 <body>
   <div id="controls" class="menu">
@@ -15,11 +16,52 @@
     <a href="javascript:void(0);" id="settingsBtn" onclick="openModal('settings')">Settings</a>
     <a href="javascript:void(0);" id="helpBtn" onclick="openModal('help')">Help</a>
     <a href="javascript:void(0);" id="aboutBtn" onclick="openModal('about')">About</a>
-    <a href="javascript:void(0);" id="auto" onclick="resetCB()">Auto</a>
+    <a href="javascript:void(0);" id="modeBtn" onclick="switchMode()">Mode: CB</a>
     <a href="javascript:void(0);" id="next" style="display:none" onclick="nextGuess()">Next</a>
+    <a href="javascript:void(0);" id="reset" onclick="resetCoC()">Reset</a>
   </div>
   
   <div id="cb_container"></div>
+
+  <div id="coc_container">
+    <table id="coc_table">
+      <tr>
+        <td id="node0"></td>
+        <td id="node1"></td>
+        <td id="node2"></td>
+        <td id="node3"></td>
+        <td id="node4"></td>
+      </tr>
+      <tr>
+        <td id="node5"></td>
+        <td id="node6"></td>
+        <td id="node7"></td>
+        <td id="node8"></td>
+        <td id="node9"></td>
+      </tr>
+      <tr>
+        <td id="node10"></td>
+        <td id="node11"></td>
+        <td id="node12"></td>
+        <td id="node13"></td>
+        <td id="node14"></td>
+      </tr>
+      <tr>
+        <td id="node15"></td>
+        <td id="node16"></td>
+        <td id="node17"></td>
+        <td id="node18"></td>
+        <td id="node19"></td>
+      </tr>
+      <tr>
+        <td id="node20"></td>
+        <td id="node21"></td>
+        <td id="node22"></td>
+        <td id="node23"></td>
+        <td id="node24"></td>
+      </tr>
+    </table>
+  </div>
 
   <div id="overlay_container" style="display:none">
     <div id="modal_container">
@@ -66,5 +108,6 @@
 
   <script src="scripts/main.js"></script>
   <script src="scripts/cb.js"></script>
+  <script src="scripts/coc.js"></script>
 </body>
 </html>
