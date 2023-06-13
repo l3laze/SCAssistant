@@ -1,4 +1,6 @@
-function bumpScore (what, how, event) {
+'use strict'
+
+function bumpScore (what, how) {
   let score = parseInt(what.innerText)
 
   if (typeof how === 'undefined' && score === 4) {
@@ -16,6 +18,16 @@ function bumpScore (what, how, event) {
   what.innerText = score
 }
 
+function scoreLClick (ev) {
+  bumpScore(ev.currentTarget)
+}
+
+function scoreRClick (ev) {
+  ev.preventDefault()
+  bumpScore(ev.currentTarget, 'minus')
+  return false
+}
+
 function addRow () {
   const d = document.createElement('div')
   const s = document.createElement('span')
@@ -27,25 +39,11 @@ function addRow () {
   c.classList.add('correct')
   i.classList.add('misplaced')
 
-  c.addEventListener('click', function () {
-    bumpScore(c)
-  })
+  c.addEventListener('click', scoreLClick)
+  i.addEventListener('click', scoreLClick)
 
-  i.addEventListener('click', function () {
-    bumpScore(i)
-  })
-
-  c.addEventListener('contextmenu', function (event) {
-    event.preventDefault();
-    bumpScore(c, 'minus')
-    return false
-  })
-
-  i.addEventListener('contextmenu', function (event) {
-    event.preventDefault()
-    bumpScore(i, 'minus')
-    return false
-  })
+  c.addEventListener('contextmenu', scoreRClick)
+  i.addEventListener('contextmenu', scoreRClick)
 
   c.appendChild(document.createTextNode('0'))
   i.appendChild(document.createTextNode('0'))
@@ -253,6 +251,21 @@ function addGuess (guess, correct, misplaced) {
 }
 
 function nextGuess () {
+  document.getElementById('auto').innerText = 'Reset'
+
+  const c = Array.from(document.querySelectorAll('.correct')).slice(-1)[0]
+  const i = Array.from(document.querySelectorAll('.misplaced')).slice(-1)[0]
+
+  if (typeof c !== 'undefined') {
+    c.removeEventListener('click', scoreLClick)
+    c.removeEventListener('contextmenu', scoreRClick)
+  }
+
+  if (typeof i !== 'undefined') {
+    i.removeEventListener('click', scoreLClick)
+    i.removeEventListener('contextmenu', scoreRClick)
+  }
+
   const evidence = []
 
   document.getElementById('cb_container').style.display = ''
@@ -294,7 +307,7 @@ function nextGuess () {
 
   const rows = Array.from(document.getElementById('cb_container').querySelectorAll('.row'))
   
-  for(r of rows) {
+  for(let r of rows) {
     if (typeof r.dataset.evidence !== 'undefined') {
       evidence.push(JSON.parse(r.dataset.evidence))
     }
