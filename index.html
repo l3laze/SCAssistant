@@ -17,6 +17,7 @@
     <a href="javascript:void(0);" id="helpBtn" onclick="openModal('help')">Help</a>
     <a href="javascript:void(0);" id="aboutBtn" onclick="openModal('about')">About</a>
     <a href="javascript:void(0);" id="modeBtn" onclick="switchMode()">Mode: CB</a>
+    <a href="javascript:void(0);" id="auto" onclick="resetCB()">Start</a>
     <a href="javascript:void(0);" id="next" style="display:none" onclick="nextGuess()">Next</a>
     <a href="javascript:void(0);" id="reset" onclick="resetCoC()">Reset</a>
   </div>
@@ -75,8 +76,11 @@
       </div>
 
       <div id="help" style="display:none">
+        <h3>Code Breaker Assistant</h2>
         <hr/>
-        <span>Press Auto to reset the board and generate a random guess.</span>
+        <span>Press Start to generate a random guess.</span>
+        <hr/>
+        <span>After playing, press Reset to clear the board and start over.</span>
         <hr/>
         <span>Click to add 1 correct (green), or 1 misplaced (red).</span>
         <hr/>
@@ -85,6 +89,10 @@
         <span>Right click/long press to deduct 1 instead.</span>
         <hr/>
         <span>Right click/long press to reset to 4 from the minimum correct or displaced (0).</span>
+        <hr/>
+        <span>Right click/long press to reset to 4 from the minimum correct or displaced (0).</span>
+        <hr/>
+        <span>Assistant cannot recover from user error.</span>
         <hr/>
         <span>Android mobile? Try <a href="https://play.google.com/store/apps/details?id=com.lwi.android.flapps">Floating Apps</a> or <a href="https://play.google.com/store/apps/details?id=com.applay.overlay">Overlays</a></span>
       </div>
