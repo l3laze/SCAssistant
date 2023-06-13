@@ -8,7 +8,7 @@ function bumpScore (what, how) {
   } else if (how === 'minus') {
     score--
 
-    if(score < 0) {
+    if (score < 0) {
       score = 4
     }
   } else {
@@ -109,15 +109,15 @@ function generatePossibilities (num, alignments) {
     })
   })
 
-    return ret
-  }
+  return ret
+}
 
-function judgeGuess(answer, guess) {
- /**
-  * @param answer e.g. ["red", "green", "blue", "blue"]
-  * @param guess e.g. ["blue, green", "yellow", "red"]
-  * return e.g. { bothCorrect: 1, colorCorrect: 2 }
-  */
+function judgeGuess (answer, guess) {
+  /**
+    * @param answer e.g. ["red", "green", "blue", "blue"]
+    * @param guess e.g. ["blue, green", "yellow", "red"]
+    * return e.g. { bothCorrect: 1, colorCorrect: 2 }
+    */
   const retVal = {
     correct: 0,
     misplaced: 0
@@ -150,17 +150,19 @@ function judgeGuess(answer, guess) {
 }
 
 function guessContradictsSomeEvidence (guess, evidences) {
-  for (let key in evidences) {
-    let evidence = evidences[key]
+  let evidence
+
+  for (const key in evidences) {
+    evidence = evidences[key]
     /*
      * Treat the guess like an answer and the evidence as a guess, and
      * see whether the judgment is the same.
      */
 
-    let judgement = judgeGuess(guess, evidence.guess)
+    const judgement = judgeGuess(guess, evidence.guess)
 
     if ((judgement.correct !== evidence.correct) || (judgement.misplaced !== evidence.misplaced)) {
-      //console.log("guess", guess, "contradicts evidence", evidence.guess);
+      // console.log("guess", guess, "contradicts evidence", evidence.guess);
 
       return true
     }
@@ -170,19 +172,20 @@ function guessContradictsSomeEvidence (guess, evidences) {
 }
 
 function quickRemoveFromArray (index, array) {
- /**
-  * Removes and returns the element at the provided index from an array.
-  * This function may shuffle/reorder the elements of the array for
-  * efficiency reasons. For example, if you request to remove the first
-  * element of the array, rather than reindexing every element in the
-  * array (O(N)), this function may choose to swap the first and last
-  * element of the array, and then remove the last element from the
-  * array (O(1)).
-  */
+  /**
+    * Removes and returns the element at the provided index from an array.
+    * This function may shuffle/reorder the elements of the array for
+    * efficiency reasons. For example, if you request to remove the first
+    * element of the array, rather than reindexing every element in the
+    * array (O(N)), this function may choose to swap the first and last
+    * element of the array, and then remove the last element from the
+    * array (O(1)).
+    */
+
   const arrayLength = array.length
 
   if (index >= arrayLength || index < 0) {
-    throw new Error("Tried to access index " + index + " from array of length " + arrayLength)
+    throw new Error(`Tried to access index ${index} from array of length ${arrayLength}`)
   }
 
   if (arrayLength === 1) {
@@ -197,14 +200,14 @@ function quickRemoveFromArray (index, array) {
 }
 
 function generateGuess (evidence) {
- /**
-  * Returns an array e.g. ["red", "green", "blue"] or null to indicate
-  * that there are no possible guesses left. It randomly selects one of
-  * the guesses from the provided `gameState` parameter, and removes
-  * that guess from the list of possible guesses. This function may also
-  * "shuffle" or reorder the elements in the possible guesses list for
-  * efficiency reasons.
-  */
+  /**
+    * Returns an array e.g. ["red", "green", "blue"] or null to indicate
+    * that there are no possible guesses left. It randomly selects one of
+    * the guesses from the provided `gameState` parameter, and removes
+    * that guess from the list of possible guesses. This function may also
+    * "shuffle" or reorder the elements in the possible guesses list for
+    * efficiency reasons.
+    */
 
   let guessIndex = Math.floor(Math.random() * possibilities.length)
   let guess = quickRemoveFromArray(guessIndex, possibilities)
@@ -220,7 +223,7 @@ function generateGuess (evidence) {
   }
 
   if (typeof guess !== 'object' || guess.constructor.name !== 'Array') {
-    throw new Error("Expected guess to be an array, but it was a(n) " + (typeof guess))
+    throw new Error(`Expected guess to be an array, but it was a(n) ${typeof guess}`)
   }
 
   return guess
@@ -299,15 +302,15 @@ function nextGuess () {
 
     const e = JSON.parse(getRow().dataset.evidence)
 
-    e['correct'] = correct
-    e['misplaced'] = misplaced
+    e.correct = correct
+    e.misplaced = misplaced
 
     getRow().dataset.evidence = JSON.stringify(e)
   }
 
   const rows = Array.from(document.getElementById('cb_container').querySelectorAll('.row'))
-  
-  for(let r of rows) {
+
+  for (const r of rows) {
     if (typeof r.dataset.evidence !== 'undefined') {
       evidence.push(JSON.parse(r.dataset.evidence))
     }
@@ -331,8 +334,7 @@ function nextGuess () {
   }
 }
 
-function resetCB () {
-  const rows = Array.from(document.querySelectorAll('.row'))
+function resetCB () { // eslint-disable-line no-unused-vars
   const cb = document.getElementById('cb_container')
 
   cb.style.display = ''
@@ -342,7 +344,7 @@ function resetCB () {
 
   // Not great, but better than previous garbage. Lol.
   cb.innerHTML = ''
-  
+
   document.getElementById('next').style.display = ''
 
   possibilities = generatePossibilities(4, ['u', 'd', 'l', 'r'])
