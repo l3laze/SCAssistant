@@ -259,16 +259,6 @@ function nextGuess () {
   const c = Array.from(document.querySelectorAll('.correct')).slice(-1)[0]
   const i = Array.from(document.querySelectorAll('.misplaced')).slice(-1)[0]
 
-  if (typeof c !== 'undefined') {
-    c.removeEventListener('click', scoreLClick)
-    c.removeEventListener('contextmenu', scoreRClick)
-  }
-
-  if (typeof i !== 'undefined') {
-    i.removeEventListener('click', scoreLClick)
-    i.removeEventListener('contextmenu', scoreRClick)
-  }
-
   const evidence = []
 
   document.getElementById('cb_container').style.display = ''
@@ -285,6 +275,18 @@ function nextGuess () {
     const sb = getScoreboard()
     const correct = parseInt(sb.correct.innerText)
     const misplaced = parseInt(sb.misplaced.innerText)
+
+    if ((correct + misplaced) <= 4 && (correct + misplaced) >= 0) {
+      if (typeof c !== 'undefined') {
+        c.removeEventListener('click', scoreLClick)
+        c.removeEventListener('contextmenu', scoreRClick)
+      }
+
+      if (typeof i !== 'undefined') {
+        i.removeEventListener('click', scoreLClick)
+        i.removeEventListener('contextmenu', scoreRClick)
+      }
+    }
 
     if (correct + misplaced > 4) {
       showStatus('The sum of Correct and Misplaced must be less than 4.', 'warning')
