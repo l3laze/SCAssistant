@@ -21,7 +21,7 @@ document.getElementById('closeModal').addEventListener('click', function () {
   document.getElementById('overlay_container').style.display = 'none'
 })
 
-function openModal (which) {
+function openModal (which) { /* eslint-disable-line no-unused-vars */
   const modals = [
     'settings',
     'help',
@@ -44,7 +44,7 @@ function openModal (which) {
   document.getElementById('hamburger').classList.toggle('active')
 }
 
-function switchMode () {
+function switchMode () { /* eslint-disable-line no-unused-vars */
   const cbc = document.getElementById('cb_container')
   const ccc = document.getElementById('coc_container')
 

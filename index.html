@@ -17,9 +17,9 @@
     <a href="javascript:void(0);" id="helpBtn" onclick="openModal('help')">Help</a>
     <a href="javascript:void(0);" id="aboutBtn" onclick="openModal('about')">About</a>
     <a href="javascript:void(0);" id="modeBtn" onclick="switchMode()">Mode: CB</a>
-    <a href="javascript:void(0);" id="auto" onclick="resetCB()">Start</a>
+    <a href="javascript:void(0);" id="auto" onclick="resetCodebreakerBoard()">Start</a>
     <a href="javascript:void(0);" id="next" style="display:none" onclick="nextGuess()">Next</a>
-    <a href="javascript:void(0);" id="reset" onclick="resetCoC()">Reset</a>
+    <a href="javascript:void(0);" id="reset" onclick="resetClashBoard()">Reset</a>
   </div>
   
   <div id="cb_container"></div>
@@ -72,8 +72,10 @@
       </div>
       
       <div id="settings" style="display:none">
-        <a href="javascript:void(0);" id="self_test" class="" onclick="selfTest()">Self-Test</a>
-        
+        <a href="javascript:void(0);" id="self_test" class="" onclick="selfExam()">Self-Test</a>
+
+        <br>
+
         <span id="testResults"></span>
       </div>
 
@@ -170,8 +172,10 @@
   </div>
 
   <script src="scripts/main.js"></script>
-  <script src="scripts/cb.js"></script>
-  <script src="scripts/coc.js"></script>
-  <script src="scripts/test.js"></script>
+  <script src="scripts/codebreaker-assistant.js"></script>
+  <script src="scripts/clash-assistant.js"></script>
+  <script src="scripts/testease.js"></script>
+  <script src="scripts/self-exam.js"></script>
+  <script src="scripts/possibilities.js"></script>
 </body>
 </html>
