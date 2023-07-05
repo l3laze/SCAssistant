@@ -41,6 +41,8 @@ async function selfExam () { /* eslint-disable-line no-unused-vars */
   const rightClickEvent = new MouseEvent('contextmenu')
 
   // Ensure the UI is in a default state, as if the app had just started.
+  document.getElementById('overlay_container').dispatchEvent(clickEvent)
+
   if (document.getElementById('cb_container').style.display === 'none') {
     document.getElementById('modeBtn').dispatchEvent(clickEvent)
   }
@@ -148,6 +150,7 @@ async function selfExam () { /* eslint-disable-line no-unused-vars */
     return document.getElementById('node13').classList.contains('hit') === false
   })
 
+  document.getElementById('auto').dispatchEvent(clickEvent)
   document.getElementById('modeBtn').dispatchEvent(clickEvent)
   document.getElementById('hamburger').dispatchEvent(clickEvent)
   document.getElementById('settingsBtn').dispatchEvent(clickEvent)

@@ -1,5 +1,9 @@
 'use strict'
 
+function sleep (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 function testease () { /* eslint-disable-line no-unused-vars */
   const results = {
     passed: 0,
@@ -48,19 +52,23 @@ function testease () { /* eslint-disable-line no-unused-vars */
       }
     }
 
-    if (!testPassed && flags.fails) {
-      testPassed = true
+    if (typeof error === 'undefined') {
       error = {
-        message: 'Expected failure.'
+        message: '\n'
       }
     }
 
-    if (testPassed) {
+    if (!testPassed && flags.fails) {
+      results.passed++
+      results.message += `    ${check} ${label}\n[Expected Failure] ${error.message}`
+    } else if (!testPassed && flags.fails === false) {
+      results.message += `    ${cross} ${label}\n${error.message}`
+    } else {
       results.passed++
       results.message += `    ${check} ${label}\n`
-    } else {
-      results.message += `    ${cross} ${label}\n${error.message}`
     }
+
+    // console.debug(label + ' = ' + (testPassed ? 'passed' : 'failed') + '\n', func, flags)
   }
 
   async function it (label, func, time = -1) {
