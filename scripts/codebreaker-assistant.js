@@ -2,31 +2,22 @@
 
 /* global preGeneratedPossibilities */
 
-function bumpScore (what, how) {
-  let score = parseInt(what.innerText)
-
-  if (typeof how === 'undefined' && score === 4) {
-    score = 0
-  } else if (how === 'minus') {
-    score--
-
-    if (score < 0) {
-      score = 4
-    }
-  } else {
-    score++
-  }
-
-  what.innerText = score
-}
-
 function scoreLClick (ev) {
-  bumpScore(ev.currentTarget)
+  const scoreboardElement = ev.currentTarget
+  const score = parseInt(scoreboardElement.innerText)
+
+  scoreboardElement.innerText = score + 1 > 4 ? 0 : score + 1
 }
 
 function scoreRClick (ev) {
   ev.preventDefault()
-  bumpScore(ev.currentTarget, 'minus')
+  ev.stopPropagation()
+
+  const scoreboardElement = ev.currentTarget
+  const score = parseInt(scoreboardElement.innerText)
+
+  scoreboardElement.innerText = score - 1 < 0 ? 4 : score - 1
+
   return false
 }
 
@@ -76,15 +67,14 @@ function getRow () {
   return r
 }
 
-function getScoreboard () {
-  const s = Array.from(document.querySelectorAll('.scoreboard')).slice(-1)[0]
-  const correct = s.children[0]
-  const misplaced = s.children[1]
+function getScoreboardElements () {
+  const correctElement = Array.from(document.querySelectorAll('.correct')).slice(-1)[0]
+  const misplacedElement = Array.from(document.querySelectorAll('.misplaced')).slice(-1)[0]
 
-  return {
-    correct,
-    misplaced
-  }
+  return [
+    correctElement,
+    misplacedElement
+  ]
 }
 
 function showStatus (message, type = 'success') {
@@ -156,35 +146,17 @@ function guessContradictsSomeEvidence (guess, evidences) {
   return false
 }
 
-function quickRemoveFromArray (index, array) {
-  /**
-    * Removes and returns the element at the provided index from an array.
-    * This function may shuffle/reorder the elements of the array for
-    * efficiency reasons. For example, if you request to remove the first
-    * element of the array, rather than reindexing every element in the
-    * array (O(N)), this function may choose to swap the first and last
-    * element of the array, and then remove the last element from the
-    * array (O(1)).
-    */
-
-  const arrayLength = array.length
-
-  if (index >= arrayLength || index < 0) {
-    throw new Error(`Tried to access index ${index} from array of length ${arrayLength}`)
+function getRandomGuess () {
+  if (possibilities.length < 1) {
+    throw new Error('No more possibilities. There was likely a mistake in the data you entered.')
   }
 
-  if (arrayLength === 1) {
-    return array.pop()
-  }
+  const randomIndex = Math.floor(Math.random() * possibilities.length)
 
-  const retVal = array[index]
-  const lastElement = array.pop()
-  array[index] = lastElement
-
-  return retVal
+  return possibilities.splice(randomIndex, 1)[0]
 }
 
-function generateGuess (evidence) {
+function generateAGuess (previousEvidence) {
   /**
     * Returns an array e.g. ["red", "green", "blue"] or null to indicate
     * that there are no possible guesses left. It randomly selects one of
@@ -194,27 +166,30 @@ function generateGuess (evidence) {
     * efficiency reasons.
     */
 
-  let guessIndex = Math.floor(Math.random() * possibilities.length)
-  let guess = quickRemoveFromArray(guessIndex, possibilities)
+  let randomGuess
 
-  while (guessContradictsSomeEvidence(guess, evidence)) {
-    if (possibilities.length < 1) {
-      return null
+  try {
+    randomGuess = getRandomGuess()
+
+    while (guessContradictsSomeEvidence(randomGuess, previousEvidence)) {
+      randomGuess = getRandomGuess()
     }
 
-    guessIndex = Math.floor(Math.random() * possibilities.length)
+    if (typeof randomGuess !== 'object' || randomGuess.constructor.name !== 'Array') {
+      throw new Error(`Runtime error: Expected guess to be an array, but it was a(n) ${typeof randomGuess}`)
+    }
+  } catch (error) {
+    showStatus(error.message, 'failure')
 
-    guess = quickRemoveFromArray(guessIndex, possibilities)
+    document.getElementById('next').style.display = 'none'
+
+    throw new Error('Fatal Error. Preventing script from continuing without possibilities array reset.')
   }
 
-  if (typeof guess !== 'object' || guess.constructor.name !== 'Array') {
-    throw new Error(`Expected guess to be an array, but it was a(n) ${typeof guess}`)
-  }
-
-  return guess
+  return randomGuess
 }
 
-function addGuess (guess, correct, misplaced) {
+function addGuess (theGuess) {
   const shortToLong = {
     u: 'up',
     d: 'down',
@@ -224,25 +199,72 @@ function addGuess (guess, correct, misplaced) {
 
   const keys = Object.keys(shortToLong)
 
-  guess.forEach((alignment) => {
+  addRow()
+
+  let row = getRow()
+
+  row.dataset.guess = theGuess
+  row.style.display = 'inline-block'
+
+  theGuess.forEach((alignment) => {
     if (keys.indexOf(alignment) < 0) {
-      throw new Error('Expected one of up, down, left, or right, but found ' + alignment)
+      throw new Error('Runtime error: Expected one of up, down, left, or right, but found ' + alignment)
     }
 
     addArrow(shortToLong[alignment])
   })
 
-  const row = getRow()
+  row = getRow()
   row.dataset.evidence = JSON.stringify({
-    guess
+    guess: theGuess
   })
 }
 
-function nextGuess () {
-  document.getElementById('auto').innerText = 'Reset'
+function checkState () {
+  const lastRow = getRow()
 
-  const c = Array.from(document.querySelectorAll('.correct')).slice(-1)[0]
-  const i = Array.from(document.querySelectorAll('.misplaced')).slice(-1)[0]
+  if (typeof lastRow !== 'undefined') {
+    const [correctElement, misplacedElement] = getScoreboardElements()
+    const correctScore = parseInt(correctElement.innerText)
+    const misplacedScore = parseInt(misplacedElement.innerText)
+
+    if ((correctScore + misplacedScore) <= 4 && (correctScore + misplacedScore) >= 0) {
+      if (typeof correctElement !== 'undefined') {
+        correctElement.removeEventListener('click', scoreLClick)
+        correctElement.removeEventListener('contextmenu', scoreRClick)
+      }
+
+      if (typeof misplacedElement !== 'undefined') {
+        misplacedElement.removeEventListener('click', scoreLClick)
+        misplacedElement.removeEventListener('contextmenu', scoreRClick)
+      }
+    }
+
+    if (correctScore + misplacedScore > 4) {
+      showStatus('The sum of Correct and Misplaced must be less than 4.', 'warning')
+
+      return true
+    } else if (correctScore === 4) {
+      showStatus('Success! Try again.', 'success')
+
+      document.getElementById('next').style.display = 'none'
+
+      return true
+    }
+
+    const e = JSON.parse(getRow().dataset.evidence)
+
+    e.correct = correctScore
+    e.misplaced = misplacedScore
+
+    getRow().dataset.evidence = JSON.stringify(e)
+  }
+
+  return false
+}
+
+function makeNextGuess () {
+  document.getElementById('auto').innerText = 'Reset'
 
   const evidence = []
 
@@ -254,45 +276,8 @@ function nextGuess () {
   Array.from(document.getElementsByClassName('status'))
     .forEach((s) => s.remove())
 
-  const lastRow = getRow()
-
-  if (typeof lastRow !== 'undefined' && lastRow.style.display !== 'none') {
-    const sb = getScoreboard()
-    const correct = parseInt(sb.correct.innerText)
-    const misplaced = parseInt(sb.misplaced.innerText)
-
-    if ((correct + misplaced) <= 4 && (correct + misplaced) >= 0) {
-      if (typeof c !== 'undefined') {
-        c.removeEventListener('click', scoreLClick)
-        c.removeEventListener('contextmenu', scoreRClick)
-      }
-
-      if (typeof i !== 'undefined') {
-        i.removeEventListener('click', scoreLClick)
-        i.removeEventListener('contextmenu', scoreRClick)
-      }
-    }
-
-    if (correct + misplaced > 4) {
-      showStatus('The sum of Correct and Misplaced must be less than 4.', 'warning')
-
-      return
-    }
-
-    if (correct === 4) {
-      showStatus('Success! Try again.', 'success')
-
-      document.getElementById('next').style.display = 'none'
-
-      return
-    }
-
-    const e = JSON.parse(getRow().dataset.evidence)
-
-    e.correct = correct
-    e.misplaced = misplaced
-
-    getRow().dataset.evidence = JSON.stringify(e)
+  if (checkState()) {
+    return
   }
 
   const rows = Array.from(document.getElementById('cb_container').querySelectorAll('.row'))
@@ -303,22 +288,9 @@ function nextGuess () {
     }
   }
 
-  const next = generateGuess(evidence)
+  const next = generateAGuess(evidence)
 
-  if (next === null) {
-    document.getElementById('next').style.display = 'none'
-
-    showStatus('Ran out of possibilities to guess. There may be a mistake in the data you entered.', 'failure')
-  } else {
-    addRow()
-
-    const row = getRow()
-
-    row.dataset.guess = next
-    row.style.display = 'inline-block'
-
-    addGuess(next)
-  }
+  addGuess(next)
 }
 
 function resetCodebreakerBoard () { // eslint-disable-line no-unused-vars
@@ -334,9 +306,9 @@ function resetCodebreakerBoard () { // eslint-disable-line no-unused-vars
 
   document.getElementById('next').style.display = ''
 
-  possibilities = preGeneratedPossibilities
+  possibilities = Object.assign([], preGeneratedPossibilities)
 
-  nextGuess()
+  makeNextGuess()
 }
 
 let possibilities = []
