@@ -21,6 +21,13 @@ document.getElementById('closeModal').addEventListener('click', function () {
   document.getElementById('overlay_container').style.display = 'none'
 })
 
+window.addEventListener('contextmenu', function (e) {
+  e.preventDefault()
+  e.stopPropagation()
+
+  return false
+})
+
 function openModal (which) { /* eslint-disable-line no-unused-vars */
   const modals = [
     'settings',

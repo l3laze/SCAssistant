@@ -1,8 +1,10 @@
 'use strict'
 
-function sleep (ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
+/*
+  function sleep (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+*/
 
 function testease () { /* eslint-disable-line no-unused-vars */
   const results = {

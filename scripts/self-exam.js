@@ -81,7 +81,7 @@ async function selfExam () { /* eslint-disable-line no-unused-vars */
     return typeof document.querySelectorAll('.row')[0] !== 'undefined'
   })
 
-  const row = Array.from(document.querySelectorAll('.row')).slice(-1)[0]
+  const row = document.querySelectorAll('.row')[0]
   const score = Array.from(row.querySelectorAll('.scoreboard')).slice(-1)[0]
 
   it('Increases score on click', function incScores () {
