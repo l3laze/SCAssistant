@@ -3,10 +3,6 @@
   margin: 0;
 }
 
-html, body {
-  width: 100vw;
-}
-
 body {
   background: black;
   text-align: center;
@@ -15,8 +11,10 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   overflow-x: hidden;
   user-select: none;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
   -webkit-user-select: none;
-  -webkit-touch-callout: none;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-touch-callout: none; 
 }
 
 a {
@@ -30,70 +28,76 @@ a {
   text-align: center;
 }
 
-.menu a {
+.menu button {
   float: left;
+  background: black;
   color: white;
   font-size: 20px;
   font-weight: bold;
   width: 20vw;
 }
 
-.menu > a:hover, #modal > a:hover, #modal > a:hover::after, #closeModal:hover {
-  background: #90C;
+.menu > button:hover {
+  font-size: 14px;
+  padding-top: 4px;
+  padding-bottom: 3px;
 }
 
 .menu .icon {
   display: none;
 }
 
-#hamburger:after {
+#hamburger::after {
   content: '\2630';
 }
 
-#controls.menu a:nth-child(n+2):nth-child(-n+5) {
+#controls.menu button:active {
+  filter: invert(1);
+}
+
+#controls.menu button:nth-child(n+2):nth-child(-n+5) {
   display: block;
   width: 25vw;
   margin: 0;
 }
 
-#controls.menu a:nth-child(n+6):nth-child(-n+7) {
+#controls.menu button:nth-child(n+6):nth-child(-n+7) {
   display: block;
   width: 50vw;
   margin: 0;
-  border-top: 1px solid gray;
 }
 
-#controls a#reset {
+#controls button#reset {
   display: none;
-  border-top: 1px solid gray;
   width: 100vw;
 }
 
-#controls.menu.responsive a#reset {
+#controls.menu.responsive button#reset {
   display: none;
 }
 
-#coc_container {
+#coc-container {
   display: none;
 }
 
-@media screen and (max-width: 600px) {
-  #hamburger.active:after {
+@media screen and (width <= 600px) {
+  #hamburger.active::after {
     content: '\2715';
     width: 100vw;
     font-size: 18px;
   }
 
-  #controls a:nth-child(n+2):nth-child(-n+5) {
+  .menu button {
+    height: 32px;
+    width: calc(50% - 24px);
+  }
+
+  #controls button:nth-child(n+2):nth-child(-n+5) {
     display: none;
     width: 45vw;
   }
 
-  .menu a {
-    width: calc(50% - 24px);
-  }
-
-  .menu a.icon {
+  .menu button.icon {
     float: left;
     display: block;
     width: 48px;
@@ -108,39 +112,38 @@ a {
     top: 0;
   }
 
-  .menu a.active {
+  .menu button.active {
     width: 100vw;
   }
 
-  #controls.menu.responsive a:nth-child(n+2), #controls.menu.responsive a:nth-child(-n+5) {
-    padding: 0 0 2px 0;
+  #controls.menu.responsive button:nth-child(n+2), #controls.menu.responsive button:nth-child(-n+5) {
+    padding: 0 0 2px;
   }
 
-  #controls.menu.responsive a:nth-child(n+2):nth-child(-n+5) {
+  #controls.menu button:nth-child(n+2):nth-child(-n+5) {
+    display: none;
+  }
+
+  #controls.menu button:nth-child(n+6):nth-child(-n+8) {
+    width: calc((100vw - 48px) / 2);
+  }
+
+  #controls.menu.responsive button:nth-child(n+2):nth-child(-n+5) {
     display: block;
     width: 100vw;
     margin: 0;
   }
 
-  #controls.menu a:nth-child(n+2):nth-child(-n+5) {
+  #controls.menu.responsive button:nth-child(n+6):nth-child(-n+7) {
     display: none;
   }
 
-  #controls.menu a:nth-child(n+6):nth-child(-n+8) {
-    border: none;
-    width: calc((100vw - 48px) / 2);
-  }
-
-  #controls.menu.responsive a:nth-child(n+6):nth-child(-n+7) {
-    display: none;
-  }
-
-  #controls.menu a#reset {
+  #controls.menu button#reset {
     border: none;
     width: calc(100vw - 48px);
   }
 
-  #controls.responsive #hamburger.active ~ a#reset {
+  #controls.responsive #hamburger.active ~ button#reset {
     visibility: hidden;
   }
 }

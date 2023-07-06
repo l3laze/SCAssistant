@@ -1,13 +1,13 @@
-#coc_table {
+#coc-table {
   display: inline-block;
 }
 
-#coc_table td {
+#coc-table td {
   width: clamp(8px, 16vw, 80px);
   height: clamp(8px, 20vw, 100px);
   border: 1px solid white;
 }
 
-#coc_table .hit {
+#coc-table .hit {
   background: red;
 }
