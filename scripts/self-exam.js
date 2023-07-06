@@ -9,7 +9,7 @@ function sleep (ms) {
 async function selfExam () { /* eslint-disable-line no-unused-vars */
   const { describe, it, reporter } = testease()
 
-  describe('Test Framework.')
+  describe('Test Framework')
 
   it('Can handle success cases', function () {
     return true
@@ -35,16 +35,16 @@ async function selfExam () { /* eslint-disable-line no-unused-vars */
     return false
   }, 0)
 
-  describe('SC Assistant.')
+  describe('SC Assistant')
 
   const clickEvent = new MouseEvent('click')
   const rightClickEvent = new MouseEvent('contextmenu')
 
   // Ensure the UI is in a default state, as if the app had just started.
-  document.getElementById('overlay_container').dispatchEvent(clickEvent)
+  document.getElementById('overlay-container').dispatchEvent(clickEvent)
 
-  if (document.getElementById('cb_container').style.display === 'none') {
-    document.getElementById('modeBtn').dispatchEvent(clickEvent)
+  if (document.getElementById('cb-container').style.display === 'none') {
+    document.getElementById('mode-button').dispatchEvent(clickEvent)
   }
 
   document.getElementById('auto').dispatchEvent(clickEvent)
@@ -52,7 +52,7 @@ async function selfExam () { /* eslint-disable-line no-unused-vars */
   document.getElementById('controls').classList.remove('responsive')
 
   it('Shows settings', function showSettings () {
-    const s = document.getElementById('settingsBtn')
+    const s = document.getElementById('settings-button')
 
     s.dispatchEvent(clickEvent)
 
@@ -60,7 +60,7 @@ async function selfExam () { /* eslint-disable-line no-unused-vars */
   })
 
   it('Shows help', function showHelp () {
-    const h = document.getElementById('helpBtn')
+    const h = document.getElementById('help-button')
 
     h.dispatchEvent(clickEvent)
 
@@ -68,7 +68,7 @@ async function selfExam () { /* eslint-disable-line no-unused-vars */
   })
 
   it('Shows about', function showAbout () {
-    const a = document.getElementById('aboutBtn')
+    const a = document.getElementById('about-button')
 
     a.dispatchEvent(clickEvent)
 
@@ -121,21 +121,21 @@ async function selfExam () { /* eslint-disable-line no-unused-vars */
     next.dispatchEvent(clickEvent)
 
     document.getElementById('auto').innerText = 'Start'
-    document.getElementById('cb_container').innerHTML = ''
+    document.getElementById('cb-container').innerHTML = ''
 
     return next.style.display === 'none'
   })
 
   it('Switches to CoC mode', function switchMode () {
-    const m = document.getElementById('modeBtn')
+    const m = document.getElementById('mode-button')
 
     m.dispatchEvent(clickEvent)
 
-    return document.getElementById('coc_container').style.display !== 'none'
+    return document.getElementById('coc-container').style.display !== 'none'
   })
 
   it('Can select tiles in CoC mode', function selectFromCoC () {
-    const n = document.getElementById('node13')
+    const n = document.getElementById('node-13')
 
     n.dispatchEvent(clickEvent)
 
@@ -147,15 +147,15 @@ async function selfExam () { /* eslint-disable-line no-unused-vars */
 
     r.dispatchEvent(clickEvent)
 
-    return document.getElementById('node13').classList.contains('hit') === false
+    return document.getElementById('node-13').classList.contains('hit') === false
   })
 
   document.getElementById('auto').dispatchEvent(clickEvent)
-  document.getElementById('modeBtn').dispatchEvent(clickEvent)
+  document.getElementById('mode-button').dispatchEvent(clickEvent)
   document.getElementById('hamburger').dispatchEvent(clickEvent)
-  document.getElementById('settingsBtn').dispatchEvent(clickEvent)
+  document.getElementById('settings-button').dispatchEvent(clickEvent)
 
-  const resultOutput = document.getElementById('testResults')
+  const resultOutput = document.getElementById('test-results')
   resultOutput.innerText = reporter()
 
   resultOutput.scrollTop = resultOutput.scrollHeight

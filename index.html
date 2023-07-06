@@ -1,181 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Tools for the game WWE SuperCard.">
-<title>SC Assistant</title>
-<link rel="stylesheet" href="style/main.css">
-<link rel="stylesheet" href="style/dialog.css">
-<link rel="stylesheet" href="style/cb.css">
-<link rel="stylesheet" href="style/coc.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Tools for the game WWE SuperCard." />
+  <title>SC Assistant</title>
+  <link rel="stylesheet" href="style/main.css" />
+  <link rel="stylesheet" href="style/dialog.css" />
+  <link rel="stylesheet" href="style/cb.css" />
+  <link rel="stylesheet" href="style/coc.css" />
 </head>
+
 <body>
   <div id="controls" class="menu">
-    <a href="javascript:void(0);" id="hamburger" class="icon"></a>
-    <a href="javascript:void(0);" id="settingsBtn" onclick="openModal('settings')">Settings</a>
-    <a href="javascript:void(0);" id="helpBtn" onclick="openModal('help')">Help</a>
-    <a href="javascript:void(0);" id="aboutBtn" onclick="openModal('about')">About</a>
-    <a href="javascript:void(0);" id="modeBtn" onclick="switchMode()">Mode: CB</a>
-    <a href="javascript:void(0);" id="auto" onclick="resetCodebreakerBoard()">Start</a>
-    <a href="javascript:void(0);" id="next" style="display:none" onclick="makeNextGuess()">Next</a>
-    <a href="javascript:void(0);" id="reset" onclick="resetClashBoard()">Reset</a>
+    <button id="hamburger" class="icon"></button>
+    <button id="settings-button" onclick="openModal('settings')">Settings</a>
+    <button id="help-button" onclick="openModal('help')">Help</a>
+    <button id="about-button" onclick="openModal('about')">About</a>
+    <button id="mode-button" onclick="switchMode()">Mode: CB</a>
+    <button id="auto" onclick="cbAssistant.resetCodebreakerBoard()">Start</a>
+    <button id="next" style="display: none" onclick="cbAssistant.makeNextGuess()">Next</a>
+    <button id="reset" onclick="resetClashBoard()">Reset</a>
   </div>
-  
-  <div id="cb_container"></div>
 
-  <div id="coc_container">
-    <table id="coc_table">
+  <div id="cb-container"></div>
+
+  <div id="coc-container">
+    <table id="coc-table">
       <tr>
-        <td id="node0"></td>
-        <td id="node1"></td>
-        <td id="node2"></td>
-        <td id="node3"></td>
-        <td id="node4"></td>
+        <td id="node-0"></td>
+        <td id="node-1"></td>
+        <td id="node-2"></td>
+        <td id="node-3"></td>
+        <td id="node-4"></td>
       </tr>
       <tr>
-        <td id="node5"></td>
-        <td id="node6"></td>
-        <td id="node7"></td>
-        <td id="node8"></td>
-        <td id="node9"></td>
+        <td id="node-5"></td>
+        <td id="node-6"></td>
+        <td id="node-7"></td>
+        <td id="node-8"></td>
+        <td id="node-9"></td>
       </tr>
       <tr>
-        <td id="node10"></td>
-        <td id="node11"></td>
-        <td id="node12"></td>
-        <td id="node13"></td>
-        <td id="node14"></td>
+        <td id="node-10"></td>
+        <td id="node-11"></td>
+        <td id="node-12"></td>
+        <td id="node-13"></td>
+        <td id="node-14"></td>
       </tr>
       <tr>
-        <td id="node15"></td>
-        <td id="node16"></td>
-        <td id="node17"></td>
-        <td id="node18"></td>
-        <td id="node19"></td>
+        <td id="node-15"></td>
+        <td id="node-16"></td>
+        <td id="node-17"></td>
+        <td id="node-18"></td>
+        <td id="node-19"></td>
       </tr>
       <tr>
-        <td id="node20"></td>
-        <td id="node21"></td>
-        <td id="node22"></td>
-        <td id="node23"></td>
-        <td id="node24"></td>
+        <td id="node-20"></td>
+        <td id="node-21"></td>
+        <td id="node-22"></td>
+        <td id="node-23"></td>
+        <td id="node-24"></td>
       </tr>
     </table>
   </div>
 
-  <div id="overlay_container" style="display:none">
-    <div id="modal_container">
-      <div id="modal_title">
-        <span id="modal_title_text">Title</span>
-        <a href="javascript:void(0);" id="closeModal" class="icon">X</a>
-      </div>
-      
-      <div id="settings" style="display:none">
-        <a href="javascript:void(0);" id="self_test" class="" onclick="selfExam()">Self-Test</a>
-
-        <br>
-
-        <span id="testResults"></span>
+  <div id="overlay-container" style="display: none">
+    <div id="modal-container">
+      <div id="modal-title">
+        <span id="modal-title-text">Title</span>
+        <button id="close-modal" class="icon">X</button>
       </div>
 
-      <div id="help" style="display:none">
+      <div id="settings" style="display: none">
+        <a href="javascript:void(0);" id="self-test" class="" onclick="selfExam()">Self-Test</a>
+
+        <br />
+
+        <span id="test-results"></span>
+      </div>
+
+      <div id="help" style="display: none">
         <h3>General</h3>
 
-        <br>
+        <br />
 
         <span>Press Mode to switch between CB and CoC modes.</span>
 
-        <hr>
+        <hr />
 
         <h3>Code Breaker Mode</h3>
 
-        <br>
+        <br />
 
         <span>Press Start to generate a random guess.</span>
 
-        <br>
-        <br>
+        <br />
+        <br />
 
         <span>After playing, press Reset to clear the board and start over.</span>
 
-        
-        <br>
-        <br>
+        <br />
+        <br />
 
         <span>Click to add 1 correct (green), or 1 misplaced (red).</span>
 
-        <br>
-        <br>
+        <br />
+        <br />
 
-        <span>Click to reset to 0 from the maximum correct or displaced (4).</span>
+        <span>Click to reset to 0 from the maximum correct or displaced
+          (4).</span>
 
-        <br>
-        <br>
+        <br />
+        <br />
 
         <span>Right click/long press to deduct 1 instead.</span>
 
-        <br>
-        <br>
+        <br />
+        <br />
 
-        <span>Right click/long press to reset to 4 from the minimum correct or displaced (0).</span>
+        <span>Right click/long press to reset to 4 from the minimum correct or
+          displaced (0).</span>
 
-        <br>
-        <br>
+        <br />
+        <br />
 
-        <span>Right click/long press to reset to 4 from the minimum correct or displaced (0).</span>
+        <span>Right click/long press to reset to 4 from the minimum correct or
+          displaced (0).</span>
 
-        <br>
-        <br>
+        <br />
+        <br />
 
         <span>Assistant cannot recover from user error.</span>
 
-        <hr>
+        <hr />
 
         <h3>Clash of Champions Mode</h3>
 
-        <br>
+        <br />
 
         <span>Press a square to mark or unmark it.</span>
-        
-        <br>
-        <br>
 
-        <span>Press Reset to reset the board.</span><hr>
+        <br />
+        <br />
 
-        <span>Android mobile? Try <a href="https://play.google.com/store/apps/details?id=com.lwi.android.flapps">Floating Apps</a> or <a href="https://play.google.com/store/apps/details?id=com.applay.overlay">Overlays</a></span>
+        <span>Press Reset to reset the board.</span>
+        <hr />
+
+        <span>Android mobile? Try
+          <a href="https://play.google.com/store/apps/details?id=com.lwi.android.flapps">Floating Apps</a>
+          or
+          <a href="https://play.google.com/store/apps/details?id=com.applay.overlay">Overlays</a></span>
       </div>
 
       <div id="about">
-        <span>Built with <span style="color:red">&hearts;</span> by <a href="https://github.com/l3laze">l3l_aze</a></span>
+        <span>Built with <span style="color: red">&hearts;</span> by
+          <a href="https://github.com/l3laze">l3l_aze</a></span>
 
-        <hr>
+        <hr />
 
         <span>Made for Chrome</span>
 
-        <hr>
+        <hr />
 
-        <span>Code Breaker AI based on <a href="https://nebupookins.github.io/JS-Mastermind-Solver/">JS-Mastermind-Solver</a> by <a href="https://github.com/nebupookins">nebupookins</a></span>
+        <span>Code Breaker AI based on
+          <a href="https://nebupookins.github.io/JS-Mastermind-Solver/">JS-Mastermind-Solver</a>
+          by <a href="https://github.com/nebupookins">nebupookins</a></span>
 
-        <hr>
+        <hr />
 
-        <span>Modal dialog based on <a href="https://rapaccinim.medium.com/how-to-create-a-custom-resizable-modal-with-scrollable-and-fixed-content-21adb2adda28">Article</a> by <a href="https://github.com/rapaccinim">Marco Rapaccini</a></span>
+        <span>Modal dialog based on
+          <a
+            href="https://rapaccinim.medium.com/how-to-create-a-custom-resizable-modal-with-scrollable-and-fixed-content-21adb2adda28">Article</a>
+          by <a href="https://github.com/rapaccinim">Marco Rapaccini</a></span>
 
-        <hr>
+        <hr />
 
-        <span>This web site is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by Endeavor Group Holdings, Inc; WWE; 2K; Take-Two Interactive Software; or Cat Daddy Games. All product and company names are the registered trademarks of their original owners. The use of any trade name or trademark is for identification and reference purposes only and does not imply any association with the trademark holder of their product brand.
-
-          All WWE images, likenesses, slogans, trademarks, logos and copyrights are the exclusive property of WWE and its subsidiaries. All other trademarks, logos and copyrights are the property of their respective owners.
-        </span>
+        <pre id="disclaimer-text">
+This web site is not endorsed by,
+directly affiliated with, maintained,
+authorized, or sponsored by Endeavor
+Group Holdings, Inc; WWE; 2K;
+Take-Two Interactive Software; or Cat
+Daddy Games. All product and company
+names are the registered trademarks
+of their original owners. The use of
+any trade name or trademark is for
+identification and reference purposes
+only and does not imply any association
+with the trademark holder of their
+product brand. All WWE images,
+likenesses, slogans, trademarks, logos
+and copyrights are the exclusive
+property of WWE and its subsidiaries.
+All other trademarks, logos and
+copyrights are the property of their
+respective owners.
+        </pre>
       </div>
     </div>
   </div>
 
-  <script src="scripts/main.js"></script>
   <script src="scripts/codebreaker-assistant.js"></script>
   <script src="scripts/clash-assistant.js"></script>
   <script src="scripts/testease.js"></script>
   <script src="scripts/self-exam.js"></script>
   <script src="scripts/possibilities.js"></script>
+  <script src="scripts/main.js"></script>
 </body>
+
 </html>
