@@ -1,13 +1,14 @@
-'use strict'
-
 /* global preGeneratedPossibilities */
 
-function CBAssistant () { /* eslint-disable-line no-unused-vars */
+const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-vars */
+  'use strict'
+
   function handleScoreClick (event) {
     event.preventDefault()
     event.stopPropagation()
 
     const scoreboardElement = event.currentTarget
+
     const score = parseInt(scoreboardElement.innerText)
 
     if (event.button === 0) {
@@ -217,11 +218,21 @@ function CBAssistant () { /* eslint-disable-line no-unused-vars */
         if (typeof correctElement !== 'undefined') {
           correctElement.removeEventListener('click', handleScoreClick)
           correctElement.removeEventListener('contextmenu', handleScoreClick)
+          correctElement.addEventListener('contextmenu', function (event) {
+            event.preventDefault()
+
+            return true
+          })
         }
 
         if (typeof misplacedElement !== 'undefined') {
           misplacedElement.removeEventListener('click', handleScoreClick)
           misplacedElement.removeEventListener('contextmenu', handleScoreClick)
+          misplacedElement.addEventListener('contextmenu', function (event) {
+            event.preventDefault()
+
+            return true
+          })
         }
       }
 
@@ -302,4 +313,4 @@ function CBAssistant () { /* eslint-disable-line no-unused-vars */
     resetCodebreakerBoard,
     makeNextGuess
   }
-}
+})()
