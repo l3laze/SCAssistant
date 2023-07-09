@@ -46,15 +46,6 @@
   background-color: red;
 }
 
-.correct:hover, .misplaced:hover {
-  background: gray;
-}
-
-.correct:active, .misplaced:active {
-  font-size: 24px;
-  padding: 10px 8px 6px;
-}
-
 .status {
   padding: 6px;
   width: calc(100vw - 12px);

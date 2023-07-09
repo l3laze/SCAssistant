@@ -38,9 +38,7 @@ a {
 }
 
 .menu > button:hover {
-  font-size: 14px;
-  padding-top: 4px;
-  padding-bottom: 3px;
+  filter: invert(1);
 }
 
 .menu .icon {
@@ -52,7 +50,11 @@ a {
 }
 
 #controls.menu button:active {
-  filter: invert(1);
+  font-size: 15px;
+  padding-top: 1px;
+  padding-bottom: 3px;
+  border-width: 3px;
+  border-style: groove;
 }
 
 #controls.menu button:nth-child(n+2):nth-child(-n+5) {
@@ -84,7 +86,11 @@ a {
   #hamburger.active::after {
     content: '\2715';
     width: 100vw;
-    font-size: 18px;
+    font-size: 14px;
+  }
+
+  #hamburger:active::after {
+    font-size: 12px;
   }
 
   .menu button {
