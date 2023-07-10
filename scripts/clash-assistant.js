@@ -1,21 +1,13 @@
 const clashAssistant = (function () { /* eslint-disable-line no-unused-vars */
   'use strict'
 
-  function initClashBoard () {
-    for (let i = 0; i < 25; i++) {
-      const node = document.getElementById('node-' + i)
+  document.getElementById('coc-container').addEventListener('click', function clickClash (event) { /* eslint-disable-line no-unused-vars */
+    const targetElementId = event.target.id
 
-      node.addEventListener('click', function toggleHit (event) {
-        const n = document.getElementById(event.target.id)
-
-        if (n.classList.contains('hit')) {
-          n.classList.remove('hit')
-        } else {
-          n.classList.add('hit')
-        }
-      })
+    if (/node-\d{1,2}/.test(targetElementId)) {
+      document.getElementById(targetElementId).classList.toggle('hit')
     }
-  }
+  })
 
   function resetClashBoard () { /* eslint-disable-line no-unused-vars */
     let node
@@ -27,8 +19,6 @@ const clashAssistant = (function () { /* eslint-disable-line no-unused-vars */
   }
 
   return {
-    initialized: false,
-    initClashBoard,
     resetClashBoard
   }
 })()

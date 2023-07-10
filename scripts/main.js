@@ -64,11 +64,6 @@ const [openModal, switchMode] = (function () { /* eslint-disable-line no-unused-
       document.getElementById('auto').style.display = 'none'
       document.getElementById('next').style.display = 'none'
       document.getElementById('reset').style.display = 'block'
-
-      if (clashAssistant.initialized === false) {
-        clashAssistant.initClashBoard()
-        clashAssistant.initialized = true
-      }
     } else {
       ccc.style.display = 'none'
       cbc.style.display = 'block'

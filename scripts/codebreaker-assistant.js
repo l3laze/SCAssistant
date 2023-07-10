@@ -49,19 +49,19 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
     t.appendChild(d)
   }
 
-  function addArrow (dir) {
+  function getRow () {
     const r = Array.from(document.querySelectorAll('.row')).slice(-1)[0]
+
+    return r
+  }
+
+  function addArrow (dir) {
+    const r = getRow()
     const d = document.createElement('div')
 
     d.classList.add(dir)
 
     r.appendChild(d)
-  }
-
-  function getRow () {
-    const r = Array.from(document.querySelectorAll('.row')).slice(-1)[0]
-
-    return r
   }
 
   function getScoreboardElements () {
@@ -169,7 +169,7 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
 
       document.getElementById('next').style.display = 'none'
 
-      throw new Error('Fatal Error. Preventing script from continuing without possibilities array reset.')
+      return
     }
 
     return randomGuess
@@ -285,6 +285,10 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
     }
 
     const next = generateAGuess(evidence)
+
+    if (!Array.isArray(next)) {
+      return
+    }
 
     addGuess(next)
   }
