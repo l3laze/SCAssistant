@@ -24,7 +24,19 @@
     <button id="reset" onclick="clashAssistant.resetClashBoard()">Reset</a>
   </div>
 
-  <div id="cb-container"></div>
+  <div id="cb-container">
+    <!--<div class="row" style="display: inline-block">
+      <span class="scoreboard">
+        <div class="correct">0</div>
+        <div class="misplaced">0</div>
+      </span>
+
+      <div class="arrow"></div>
+      <div class="arrow"></div>
+      <div class="arrow"></div>
+      <div class="arrow"></div>
+    </div>-->
+  </div>
 
   <div id="coc-container">
     <table id="coc-table">
@@ -74,9 +86,17 @@
       </div>
 
       <div id="settings" style="display: none">
-        <a href="javascript:void(0);" id="self-test" class="" onclick="selfExam()">Self-Test</a>
+        <a href="javascript:void(0);" id="self-exam" onclick="selfExam()">Testease Self Exam</a>
 
-        <br />
+        <br>
+
+        <a href="javascript:void(0);" id="test-app" onclick="testApp()">Test App</a>
+
+        <br>
+
+        <a href="javascript:void(0);" id="test-solving" onclick="testSolving()">Test Solving</a>
+
+        <br>
 
         <span id="test-results"></span>
       </div>

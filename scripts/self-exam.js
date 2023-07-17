@@ -1,6 +1,6 @@
 'use strict'
 
-/* global testease, MouseEvent */
+/* global cbAssistant, preGeneratedPossibilities, testease, MouseEvent */
 
 function sleep (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -9,7 +9,7 @@ function sleep (ms) {
 async function selfExam () { /* eslint-disable-line no-unused-vars */
   const { describe, it, reporter } = testease()
 
-  describe('Test Framework')
+  describe('Testease Framework')
 
   it('Can handle success cases', function () {
     return true
@@ -34,6 +34,15 @@ async function selfExam () { /* eslint-disable-line no-unused-vars */
 
     return false
   }, 0)
+
+  const resultOutput = document.getElementById('test-results')
+  resultOutput.innerText = reporter()
+
+  resultOutput.scrollTop = resultOutput.scrollHeight
+}
+
+async function testApp () { /* eslint-disable-line no-unused-vars */
+  const { describe, it, reporter } = testease()
 
   describe('SC Assistant')
 
@@ -158,5 +167,72 @@ async function selfExam () { /* eslint-disable-line no-unused-vars */
   const resultOutput = document.getElementById('test-results')
   resultOutput.innerText = reporter()
 
+  resultOutput.scrollTop = resultOutput.scrollHeight
+}
+
+async function testSolving () { /* eslint-disable-line no-unused-vars */
+  const { it, reporter } = testease()
+
+  const clickEvent = new MouseEvent('click')
+  const guessesEach = []
+
+  await it(`Can solve all ${preGeneratedPossibilities.length} possibilities`, async function tryHard () {
+    const allOfThePossibilities = Object.assign([], preGeneratedPossibilities)
+
+    let numberOfGuesses = 0
+    let usedGuesses = []
+    let latestGuess = []
+    let latestScore = {}
+    let latestRow
+    let scoreBoard
+
+    for (let i = 0; i < allOfThePossibilities.length; i++) {
+      cbAssistant.resetCodebreakerBoard()
+
+      numberOfGuesses = 0
+
+      do {
+        numberOfGuesses++
+        latestRow = cbAssistant.getRow()
+        latestGuess = JSON.parse(latestRow.dataset.evidence).guess
+        latestScore = cbAssistant.judgeGuess(allOfThePossibilities[i], latestGuess)
+
+        usedGuesses.push(latestGuess.join(''))
+
+        scoreBoard = latestRow.querySelector('.scoreboard')
+
+        for (let j = 0; j < latestScore.correct; j++) {
+          scoreBoard.children[0].dispatchEvent(clickEvent)
+        }
+
+        for (let k = 0; k < latestScore.misplaced; k++) {
+          scoreBoard.children[1].dispatchEvent(clickEvent)
+        }
+
+        cbAssistant.makeNextGuess()
+
+        if (latestScore.correct === 4) {
+          guessesEach.push(numberOfGuesses)
+
+          console.log(`Solved ${JSON.stringify(allOfThePossibilities[i])} in ${numberOfGuesses} attempts (${usedGuesses})`)
+        }
+      } while (latestScore.correct !== 4)
+
+      usedGuesses = []
+    }
+  })
+
+  document.getElementById('settings-button').dispatchEvent(clickEvent)
+  document.getElementById('hamburger').dispatchEvent(clickEvent)
+
+  const resultOutput = document.getElementById('test-results')
+
+  const sortedGuessesEach = guessesEach.sort((a, b) => a > b)
+
+  const message = reporter().split('\n')
+
+  message.splice(1, 0, `\nMin. Guesses = ${sortedGuessesEach[0]}\nMax. Guesses = ${sortedGuessesEach.slice(-1)}`)
+
+  resultOutput.innerText = message.join('\n')
   resultOutput.scrollTop = resultOutput.scrollHeight
 }

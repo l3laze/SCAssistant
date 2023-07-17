@@ -19,6 +19,7 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
   }
 
   function addRow () {
+    const t = document.getElementById('cb-container')
     const d = document.createElement('div')
     const s = document.createElement('span')
     const c = document.createElement('div')
@@ -41,8 +42,6 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
     s.appendChild(c)
     s.appendChild(i)
     d.appendChild(s)
-
-    const t = document.getElementById('cb-container')
 
     t.appendChild(document.createElement('br'))
 
@@ -187,7 +186,7 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
 
     addRow()
 
-    let row = getRow()
+    const row = getRow()
 
     row.dataset.guess = theGuess
     row.style.display = 'inline-block'
@@ -200,7 +199,6 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
       addArrow(shortToLong[alignment])
     })
 
-    row = getRow()
     row.dataset.evidence = JSON.stringify({
       guess: theGuess
     })
@@ -248,22 +246,21 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
         return true
       }
 
-      const e = JSON.parse(getRow().dataset.evidence)
+      const e = JSON.parse(lastRow.dataset.evidence)
 
       e.correct = correctScore
       e.misplaced = misplacedScore
 
-      getRow().dataset.evidence = JSON.stringify(e)
+      lastRow.dataset.evidence = JSON.stringify(e)
     }
 
     return false
   }
 
   function makeNextGuess () {
-    document.getElementById('auto').innerText = 'Reset'
-
     const evidence = []
 
+    document.getElementById('auto').innerText = 'Reset'
     document.getElementById('cb-container').style.display = ''
     document.getElementById('about').style.display = 'none'
     document.getElementById('help').style.display = 'none'
@@ -315,6 +312,9 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
 
   return {
     resetCodebreakerBoard,
-    makeNextGuess
+    makeNextGuess,
+    getRow,
+    getScoreboardElements,
+    judgeGuess
   }
 })()

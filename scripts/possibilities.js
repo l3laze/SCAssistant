@@ -1,46 +1,45 @@
 'use strict'
+const preGeneratedPossibilities = (function () { /* eslint-disable-line no-unused-vars */
+  // Recursive generator from https://nebupookins.github.io/JS-Mastermind-Solver/
+  function generatePossibilities (num, alignments) {
+    if (num === 1) {
+      return alignments.slice(0)
+    }
 
-// Recursive generator from https://nebupookins.github.io/JS-Mastermind-Solver/
-function generatePossibilities (num, alignments) {
-  if (num === 1) {
-    return alignments.slice(0)
-  }
+    const suffixes = generatePossibilities(num - 1, alignments)
+    const ret = []
 
-  const suffixes = generatePossibilities(num - 1, alignments)
-  const ret = []
-
-  alignments.forEach((a) => {
-    suffixes.forEach((s) => {
-      ret.push([a].concat(s))
+    alignments.forEach((a) => {
+      suffixes.forEach((s) => {
+        ret.push([a].concat(s))
+      })
     })
-  })
 
-  return ret
-}
-
-function makeFormattedPossibilitiesArray (rowSize) { /* eslint-disable-line no-unused-vars */
-  const all = generatePossibilities(4, ['u', 'd', 'l', 'r'])
-  let message = ''
-
-  for (let p = 0; p < all.length; p++) {
-    message += `${((p > 0 && p % rowSize === 0) ? '\n' : '')}${JSON.stringify(all[p])}`
-
-    // Only add a comma while not at end of array.
-    if (p < all.length - 1) {
-      message += ','
-    }
-
-    // Only add a space while not at end of row (-1 because 0-index).
-    if (p % rowSize < rowSize - 1) {
-      message += ' '
-    }
+    return ret
   }
 
-  return `  [\n${message.replace(/"/g, '\'').replace(/','/g, '\', \'')}\n]`
-}
+  function makeFormattedPossibilitiesArray (rowSize) { /* eslint-disable-line no-unused-vars */
+    const all = generatePossibilities(4, ['u', 'd', 'l', 'r'])
+    let message = ''
 
-const preGeneratedPossibilities = /* eslint-disable-line no-unused-vars */
-  [
+    for (let p = 0; p < all.length; p++) {
+      message += `${((p > 0 && p % rowSize === 0) ? '\n' : '')}${JSON.stringify(all[p])}`
+
+      // Only add a comma while not at end of array.
+      if (p < all.length - 1) {
+        message += ','
+      }
+
+      // Only add a space while not at end of row (-1 because 0-index).
+      if (p % rowSize < rowSize - 1) {
+        message += ' '
+      }
+    }
+
+    return `  [\n${message.replace(/"/g, '\'').replace(/','/g, '\', \'')}\n]`
+  }
+
+  return [
     ['u', 'u', 'u', 'u'], ['u', 'u', 'u', 'd'], ['u', 'u', 'u', 'l'], ['u', 'u', 'u', 'r'],
     ['u', 'u', 'd', 'u'], ['u', 'u', 'd', 'd'], ['u', 'u', 'd', 'l'], ['u', 'u', 'd', 'r'],
     ['u', 'u', 'l', 'u'], ['u', 'u', 'l', 'd'], ['u', 'u', 'l', 'l'], ['u', 'u', 'l', 'r'],
@@ -106,3 +105,4 @@ const preGeneratedPossibilities = /* eslint-disable-line no-unused-vars */
     ['r', 'r', 'l', 'u'], ['r', 'r', 'l', 'd'], ['r', 'r', 'l', 'l'], ['r', 'r', 'l', 'r'],
     ['r', 'r', 'r', 'u'], ['r', 'r', 'r', 'd'], ['r', 'r', 'r', 'l'], ['r', 'r', 'r', 'r']
   ]
+})()
