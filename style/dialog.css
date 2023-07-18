@@ -97,6 +97,11 @@ body::-webkit-scrollbar-thumb:hover, #modal-container::-webkit-scrollbar, #setti
   background: #90C;
 }
 
+#test-results, #disclaimer-text, #help > span {
+  display: inline-block;
+  width: clamp(320px, 80vw, 640px);
+}
+
 @media screen and (width <= 600px) {
   #modal-container {
     position: fixed;
