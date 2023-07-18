@@ -181,20 +181,19 @@ async function testSolving () { /* eslint-disable-line no-unused-vars */
 
     let numberOfGuesses = 0
     let usedGuesses = []
-    let latestGuess = []
+    let latestGuess
     let latestScore = {}
     let latestRow
     let scoreBoard
 
     for (let i = 0; i < allOfThePossibilities.length; i++) {
-      cbAssistant.resetCodebreakerBoard()
+      latestGuess = cbAssistant.resetCodebreakerBoard()
 
       numberOfGuesses = 0
 
       do {
         numberOfGuesses++
         latestRow = cbAssistant.getRow()
-        latestGuess = JSON.parse(latestRow.dataset.evidence).guess
         latestScore = cbAssistant.judgeGuess(allOfThePossibilities[i], latestGuess)
 
         usedGuesses.push(latestGuess.join(''))
@@ -209,7 +208,7 @@ async function testSolving () { /* eslint-disable-line no-unused-vars */
           scoreBoard.children[1].dispatchEvent(clickEvent)
         }
 
-        cbAssistant.makeNextGuess()
+        latestGuess = cbAssistant.makeNextGuess()
 
         if (latestScore.correct === 4) {
           guessesEach.push(numberOfGuesses)

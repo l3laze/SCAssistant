@@ -46,6 +46,8 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
     t.appendChild(document.createElement('br'))
 
     t.appendChild(d)
+
+    d.style.display = 'inline-block'
   }
 
   function getRow () {
@@ -186,21 +188,12 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
 
     addRow()
 
-    const row = getRow()
-
-    row.dataset.guess = theGuess
-    row.style.display = 'inline-block'
-
     theGuess.forEach((alignment) => {
       if (keys.indexOf(alignment) < 0) {
         throw new Error('Runtime error: Expected one of up, down, left, or right, but found ' + alignment)
       }
 
       addArrow(shortToLong[alignment])
-    })
-
-    row.dataset.evidence = JSON.stringify({
-      guess: theGuess
     })
   }
 
@@ -246,20 +239,16 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
         return true
       }
 
-      const e = JSON.parse(lastRow.dataset.evidence)
+      const e = listOfEvidence[listOfEvidence.length - 1]
 
       e.correct = correctScore
       e.misplaced = misplacedScore
-
-      lastRow.dataset.evidence = JSON.stringify(e)
     }
 
     return false
   }
 
   function makeNextGuess () {
-    const evidence = []
-
     document.getElementById('auto').innerText = 'Reset'
     document.getElementById('cb-container').style.display = ''
     document.getElementById('about').style.display = 'none'
@@ -273,21 +262,19 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
       return
     }
 
-    const rows = Array.from(document.getElementById('cb-container').querySelectorAll('.row'))
-
-    for (const r of rows) {
-      if (typeof r.dataset.evidence !== 'undefined') {
-        evidence.push(JSON.parse(r.dataset.evidence))
-      }
-    }
-
-    const next = generateAGuess(evidence)
+    const next = generateAGuess(listOfEvidence)
 
     if (!Array.isArray(next)) {
       return
     }
 
     addGuess(next)
+
+    listOfEvidence.push({
+      guess: next
+    })
+
+    return next
   }
 
   function resetCodebreakerBoard () {
@@ -299,16 +286,18 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
     document.getElementById('settings').style.display = 'none'
 
     // Not great, but better than previous garbage. Lol.
-    cb.innerHTML = ''
+    Array.from(cb.children).forEach((row) => row.remove())
 
     document.getElementById('next').style.display = ''
 
     possibilities = Object.assign([], preGeneratedPossibilities)
+    listOfEvidence = []
 
-    makeNextGuess()
+    return makeNextGuess()
   }
 
   let possibilities = []
+  let listOfEvidence = []
 
   return {
     resetCodebreakerBoard,
