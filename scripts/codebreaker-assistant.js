@@ -86,11 +86,6 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
   }
 
   function judgeGuess (answer, guess) {
-    /**
-      * @param answer e.g. ["red", "green", "blue", "blue"]
-      * @param guess e.g. ["blue, green", "yellow", "red"]
-      * return e.g. { bothCorrect: 1, colorCorrect: 2 }
-      */
     const retVal = {
       correct: 0,
       misplaced: 0
@@ -144,7 +139,7 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
 
   function getRandomGuess () {
     if (possibilities.length < 1) {
-      throw new Error('No more possibilities. There was likely a mistake in the data you entered.')
+      throw new Error('No possibilities remaining. There is a mistake in the data you entered.')
     }
 
     const randomIndex = Math.floor(Math.random() * possibilities.length)
@@ -230,13 +225,13 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
       if (correctScore + misplacedScore > 4) {
         showStatus('The sum of Correct and Misplaced must be less than 4.', 'warning')
 
-        return true
+        return false
       } else if (correctScore === 4) {
         showStatus('Success! Try again.', 'success')
 
         document.getElementById('next').style.display = 'none'
 
-        return true
+        return false
       }
 
       const e = listOfEvidence[listOfEvidence.length - 1]
@@ -245,20 +240,16 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
       e.misplaced = misplacedScore
     }
 
-    return false
+    return true
   }
 
   function makeNextGuess () {
     document.getElementById('auto').innerText = 'Reset'
-    document.getElementById('cb-container').style.display = ''
-    document.getElementById('about').style.display = 'none'
-    document.getElementById('help').style.display = 'none'
-    document.getElementById('settings').style.display = 'none'
 
     Array.from(document.getElementsByClassName('status'))
       .forEach((s) => s.remove())
 
-    if (checkState()) {
+    if (!checkState()) {
       return
     }
 
@@ -285,7 +276,6 @@ const cbAssistant = (function CbAssistant () { /* eslint-disable-line no-unused-
     document.getElementById('help').style.display = 'none'
     document.getElementById('settings').style.display = 'none'
 
-    // Not great, but better than previous garbage. Lol.
     Array.from(cb.children).forEach((row) => row.remove())
 
     document.getElementById('next').style.display = ''
